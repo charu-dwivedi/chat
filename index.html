@@ -15,6 +15,9 @@
     <link rel="stylesheet" type="text/css" href="/styles/style.css"> 
   </head>
   <body>
+    <div id="videocolumn">
+      <video />
+    </div>
     <div id="chatcolumn">
     <ul id="messages"></ul>
     <form action="">
@@ -25,6 +28,24 @@
   <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
 <script>
+  navigator.getUserMedia = navigator.getUserMedia ||
+  navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+var constraints = {video: true};
+
+function successCallback(localMediaStream) {
+  window.stream = localMediaStream; // stream available to console
+  var video = document.querySelector("video");
+  video.src = window.URL.createObjectURL(localMediaStream);
+  video.play();
+}
+
+function errorCallback(error){
+  console.log("navigator.getUserMedia error: ", error);
+}
+
+navigator.getUserMedia(constraints, successCallback, errorCallback);
+
   var socket = io();
   $('form').submit(function(){
     socket.emit('chat message', $('#m').val());
@@ -34,5 +55,6 @@
   socket.on('chat message', function(msg){
     $('#messages').append($('<li>').text(msg));
   });
+
 </script>
 </html>

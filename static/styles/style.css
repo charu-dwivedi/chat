@@ -2,3 +2,9 @@
 	float: right;
   	width: 20%;
 }
+
+video {
+	float: left;
+	width: 80%;
+	height: 80%;
+}
