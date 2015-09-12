@@ -12,11 +12,37 @@
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #eee; }
     </style>
-    <link rel="stylesheet" type="text/css" href="/styles/style.css"> 
+    <!--<style media="screen" type="text/css">
+      #chatcolumn {
+    float: right;
+  width: 254.594px;
+} 
+
+#fillerdiv{ 
+  margin-right: 254.594px;
+  /*background-color: #000000;*/
+}
+
+#videocolumn {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0px;
+    text-align: center;
+}
+.local {
+  width: 20%;
+  position: fixed;
+  left: 40%;
+  bottom: 20%;
+}
+    </style> -->
+    <link rel="stylesheet" type="text/css" href="/static/styles/style.css"> 
+    <script src="http://simplewebrtc.com/latest.js"></script>
   </head>
   <body>
     <div id="videocolumn">
-      <video />
+      <div id="localVideo" class="local" muted></div>
+      <div id="remoteVideo"></div>
     </div>
     <div id="chatcolumn">
     <ul id="messages"></ul>
@@ -24,27 +50,19 @@
       <input id="m" autocomplete="off" /><button>Send</button>
     </form>
     </div>
-  </body>
   <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
 <script>
-  navigator.getUserMedia = navigator.getUserMedia ||
-  navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-var constraints = {video: true};
+  var webrtc = new SimpleWebRTC({
+  localVideoEl: 'localVideo',
+  remoteVideosEl: 'remoteVideo',
+  autoRequestMedia: true
+  });
 
-function successCallback(localMediaStream) {
-  window.stream = localMediaStream; // stream available to console
-  var video = document.querySelector("video");
-  video.src = window.URL.createObjectURL(localMediaStream);
-  video.play();
-}
-
-function errorCallback(error){
-  console.log("navigator.getUserMedia error: ", error);
-}
-
-navigator.getUserMedia(constraints, successCallback, errorCallback);
+  webrtc.on('readyToCall', function () {
+  webrtc.joinRoom('My room name');
+  });
 
   var socket = io();
   $('form').submit(function(){
@@ -57,4 +75,5 @@ navigator.getUserMedia(constraints, successCallback, errorCallback);
   });
 
 </script>
+</body>
 </html>
