@@ -2,7 +2,7 @@
 Created a video and text chat application using WebtRTC and SocketIO that allows for easy, 2 person communication.
  Made it just to learn about video chat and WebRTC.
 
-Try it with a friend [here!](https://www.simple-chat1234.herokuapp.com)
+Try it with a friend [here!](https://simple-chat1234.herokuapp.com)
 
 Simply click on the link and send the link to your friend as well. Then 
 
